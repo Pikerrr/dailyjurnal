@@ -1,6 +1,5 @@
 <?php
 //memulai session atau melanjutkan session yang sudah ada
-session_start();
 
 //menyertakan code dari file koneksi
 include "koneksi.php";
@@ -12,40 +11,26 @@ if (isset($_SESSION['username'])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = $_POST['user'];
-  
-  //menggunakan fungsi enkripsi md5 supaya sama dengan password  yang tersimpan di database
-  $password = md5($_POST['passw']);
+  $password = $_POST['passw']; // Ambil password dari input
 
-	//prepared statement
-  $stmt = $conn->prepare("SELECT username 
-                          FROM user 
-                          WHERE username=? AND password=?");
-
-	//parameter binding 
-  $stmt->bind_param("ss", $username, $password);//username string dan password string
-  
-  //database executes the statement
+  // Prepared statement untuk mengambil password hash dari database
+  $stmt = $conn->prepare("SELECT id, username, password, foto FROM user WHERE username=?");
+  $stmt->bind_param("s", $username);
   $stmt->execute();
-  
-  //menampung hasil eksekusi
   $hasil = $stmt->get_result();
-  
-  //mengambil baris dari hasil sebagai array asosiatif
   $row = $hasil->fetch_array(MYSQLI_ASSOC);
 
-  //check apakah ada baris hasil data user yang cocok
-  if (!empty($row)) {
-    //jika ada, simpan variable username pada session
+  // Verifikasi password
+  if ($row && password_verify($password, $row['password'])) {
     $_SESSION['username'] = $row['username'];
-
-    //mengalihkan ke halaman admin
+    $_SESSION['id'] = $row['id'];
+    $_SESSION['foto'] = $row['foto'];
     header("location:admin.php");
   } else {
-	  //jika tidak ada (gagal), alihkan kembali ke halaman login
     header("location:login.php");
   }
 
-	//menutup koneksi database
+  //menutup koneksi database
   $stmt->close();
   $conn->close();
 } else {

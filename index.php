@@ -54,7 +54,7 @@ include "koneksi.php";
                         <a class="nav-link" href="#about me">About Me</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="login.php" target="_blank">Login</a>
+                      <a class="nav-link" href="login.php">Login</a>
                     </li>
                     <button id="dark" type="button" class="btn btn-dark">
               <i class="bi bi-moon-stars"></i>
@@ -70,7 +70,7 @@ include "koneksi.php";
     <section id="home" class="text-center p-5 bg-danger-subtle text-sm-start">
         <div class="container">
             <div class="d-sm-flex flex-sm-row-reverse align-items-center">
-                <img src="assets/asean.jpg" class="asean" width="300" height="400" />
+                <img src="img/asean.jpg" class="asean" width="300" height="400" />
                 <div>
                     <h1 class="fw-bold fs-2">Negara Di Asia Tenggara</h1>
                     <h4 class="lead fs-4">
@@ -126,37 +126,24 @@ include "koneksi.php";
         <h1 class="fw-bold display-4 pb-3">Gallery</h1>
         <div id="carouselExample" class="carousel slide">
           <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img
-                src="assets/asean2.jpg"
-                class="d-block w-100"
-                alt="asean2"
-              />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="assets/asean3.jpg"
-                class="d-block w-100"
-                alt="asean3"
-              />
-            </div>
-            <div class="carousel-item">
-              <img src="assets/asean4.webp"
-              class="d-block w-100" 
-              alt="asean4" />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="assets/asean5.webp"
-                class="d-block w-100"
-                alt="asean6"
-              />
-            </div>
-            <div class="carousel-item">
-              <img src="assets/asean6.webp" 
-              class="d-block w-100" 
-              alt="asean7" />
-            </div>
+            <?php
+            $sql = "SELECT * FROM gallery"; // Ambil data dari tabel gallery
+            $hasil = $conn->query($sql);
+            $isActive = true; // Untuk menandai item aktif pertama
+
+            while($row = $hasil->fetch_assoc()) {
+            ?>
+              <div class="carousel-item <?= $isActive ? 'active' : '' ?>">
+                <img
+                  src="img/<?= $row['gambar'] ?>"
+                  class="d-block w-100"
+                  alt="<?= $row['gambar'] ?>"
+                />
+              </div>
+            <?php
+              $isActive = false; // Set active ke false setelah item pertama
+            }
+            ?>
           </div>
           <button
             class="carousel-control-prev"
@@ -251,7 +238,7 @@ include "koneksi.php";
       <div class="container">
         <div>
           <div class="row row-cols-1 row-cols-md-2 mx-auto">
-              <img src="assets/windah.jpg" alt="" class="rounded-circle w-auto mx-0 mx-md-5" style="height: 270px;">
+              <img src="img/windah.jpg" alt="" class="rounded-circle w-auto mx-0 mx-md-5" style="height: 270px;">
               <div class="text-center my-3 my-md-auto text-md-start"> <!-- Ubah dari text-start ke text-start dan text-md-center -->
                 <p class="fs-5 m-0">A11.2023.15455</p>
                 <b><p class="fs-2 m-0">Dede Nur Fikri</p></b>

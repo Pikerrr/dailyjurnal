@@ -2,8 +2,7 @@
     <thead class="table-dark">  
         <tr>
             <th>No</th>
-            <th class="w-25">Judul</th>
-            <th class="w-75">Isi</th>
+            <th class="w-5">Tanggal</th>
             <th class="w-25">Gambar</th>
             <th class="w-25">Aksi</th>
         </tr>
@@ -17,7 +16,7 @@
         $limit_start = ($hlm - 1) * $limit;
         $no = $limit_start + 1;
 
-        $sql = "SELECT * FROM article ORDER BY tanggal DESC LIMIT $limit_start, $limit";
+        $sql = "SELECT * FROM gallery ORDER BY tanggal DESC LIMIT $limit_start, $limit";
         $hasil = $conn->query($sql);
 
         while ($row = $hasil->fetch_assoc()) {
@@ -25,11 +24,9 @@
             <tr class="table-light">
                 <td><?= $no++ ?></td>
                 <td>
-                    <strong><?= $row["judul"] ?></strong>
-                    <br>pada : <?= $row["tanggal"] ?>
-                    <br>oleh : <?= $row["username"] ?>
+                    <p>pada : <?= $row["tanggal"] ?></p>
+                    <p>oleh : <?= $row["username"] ?></p>
                 </td>
-                <td><?= $row["isi"] ?></td>
                 <td>
                     <?php
                     if ($row["gambar"] != '') {
@@ -52,11 +49,11 @@
     </tbody>
 </table>
 <?php 
-$sql1 = "SELECT * FROM article";
+$sql1 = "SELECT * FROM gallery";
 $hasil1 = $conn->query($sql1); 
 $total_records = $hasil1->num_rows;
 ?>
-<p>Total article : <?php echo $total_records; ?></p>
+<p>Total gallery : <?php echo $total_records; ?></p>
 <nav class="mb-2">
     <span class="pagination justify-content-end">
     <?php
